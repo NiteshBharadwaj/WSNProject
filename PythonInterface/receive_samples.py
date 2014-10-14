@@ -1,3 +1,6 @@
+## This can be used to receive data from a Digi Module connected via USB.
+
+
 #! /usr/bin/python
 
 from xbee.zigbee import ZigBee
