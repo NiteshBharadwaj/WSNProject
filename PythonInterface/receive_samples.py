@@ -1,4 +1,4 @@
-## This can be used to receive data from a Digi Module connected via USB.
+## This can be used to read data received on a Digi Module connected via USB.
 
 
 #! /usr/bin/python
