@@ -1,8 +1,9 @@
+
 int vPin = A1;
 int iPin = A2;
 
 boolean start = true;
-int startT = 0;
+float startT = 0;
 
 int noO = 0;
 float vsqr = 0;
@@ -23,8 +24,8 @@ void loop() {
   }
   else {
     if ((millis()-startT)<1000) {
-      float v = ((analogRead(vPin)/1023.0)-3.3)*100;
-      float i = ((analogRead(iPin)/1023.0)-3.3)*100;
+      float v = ((analogRead(vPin)/1023.0)*5-3.3)*100;
+      float i = ((analogRead(iPin)/1023.0)*5-3.3)/0.6;
       vsqr = vsqr + v*v;
       isqr = isqr + i*i;
       vi = vi + v*i;
@@ -32,8 +33,9 @@ void loop() {
     }   
     else {
       start = true;
-      float vRms = vsqr/noO;
-      float iRms = isqr/noO;
+      startT=0;
+      float vRms = sqrt(vsqr/noO);
+      float iRms = sqrt(isqr/noO);
       float power = vi/noO; 
       Serial.print(vRms);
       Serial.print(' ');
