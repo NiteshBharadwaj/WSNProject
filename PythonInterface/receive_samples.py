@@ -1,10 +1,15 @@
-## This can be used to read data received on a Digi Module connected via USB.
+'''
+Assumed mode AP=2
+If AP=1, put escaped = False in the Zigbee constructor
+The received packet is assumed to have 12 bytes of data with 4 bytes each for Voltage, Current and Power
+The source_address_long is data[0], source_address_short is data[1] and data is data[3].
+data[2] is just the mode which says rx/tx. It's redundant for now.
 
-
-#! /usr/bin/python
-
-from xbee.zigbee import ZigBee
+'''
 import serial
+import time
+from xbee import ZigBee
+
 
 PORT = 'COM4'
 BAUD_RATE = 9600
@@ -12,15 +17,16 @@ BAUD_RATE = 9600
 # Open serial port
 ser = serial.Serial(PORT, BAUD_RATE)
 
-# Create API object
-xbee = ZigBee(ser)
+zb = ZigBee(ser, escaped = True)
 
-# Continuously read and print packets
 while True:
     try:
-        response = xbee.wait_read_frame()
-        print response
+        data = zb.wait_read_frame()
+        x = data[3];
+        v = (int(x[0:2],16))+(int(x[2:4],16))/100.0;
+        i = (int(x[4:6],16))/100.0+(int(x[6:8],16))/10000.0;
+        p = (int(x[8:10],16))+(int(x[10:12],16))/100.0;
+        print 'ID:'+ str(1)+' Voltage:' + str(v) + 'V  '+ 'Current:'+str(i)+'A  '+'Power:'+str(p)+'W';
+        
     except KeyboardInterrupt:
         break
-        
-ser.close()
