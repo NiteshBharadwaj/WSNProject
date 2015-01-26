@@ -2,6 +2,7 @@
 This is updated from the stock build. Some changes were required to make it work as it was giving some garbage values otherwise
 It needs to be saved in xbee folder xbee/base.py
 Finally python setup.py install needs to be run to install the updated library
+Changes - The hex ascii handling in _split_response(self,data) is troublesome, so it is managed in this updated version. Apart from this, no changes are made to the code.
 
 xbee.py
 
